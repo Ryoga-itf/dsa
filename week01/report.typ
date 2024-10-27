@@ -10,7 +10,7 @@
   authors: (
     (
       name: env.STUDENT_NAME,
-      email: env.STUDENT_ID,
+      id: env.STUDENT_ID,
       affiliation: env.STUDENT_AFFILIATION
     ),
   ),
