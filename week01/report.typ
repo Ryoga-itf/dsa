@@ -11,7 +11,7 @@
     (
       name: env.STUDENT_NAME,
       email: env.STUDENT_ID,
-      affiliation: env.AFFILIATION
+      affiliation: env.STUDENT_AFFILIATION
     ),
   ),
   deadline: "2024 年 10 月 16 日",
