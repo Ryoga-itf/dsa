@@ -1,14 +1,17 @@
 #import "../template.typ": *
+#import "@preview/tenv:0.1.1": parse_dotenv
 #import "@preview/codelst:2.0.1": sourcecode, sourcefile
+
+#let env = parse_dotenv(read("../.env"))
 
 #show: project.with(
   week: 1,
   name: "C によるプログラミングの復習",
   authors: (
     (
-      name: sys.inputs.STUDENT_NAME,
-      id: sys.inputs.STUDENT_ID,
-      affiliation: "情報科学類 2 年 3 クラス"
+      name: env.STUDENT_NAME,
+      email: env.STUDENT_ID,
+      affiliation: env.AFFILIATION
     ),
   ),
   deadline: "2024 年 10 月 16 日",
