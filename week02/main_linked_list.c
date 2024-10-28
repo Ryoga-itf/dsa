@@ -1,6 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "linked_list.h"
+#include <stdlib.h>
 
 int main(void) {
     insert_cell_top(1);
