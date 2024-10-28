@@ -61,6 +61,7 @@ class*/
 week*/*
 !week*/*.c
 !week*/*.h
+!week*/*.output
 !week*/*.typ
 !week*/Makefile
 

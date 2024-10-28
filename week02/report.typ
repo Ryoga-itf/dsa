@@ -49,43 +49,11 @@ There is NO WARRANTY, to the extent permitted by law.
 
 また、動作を確認するために `main_linked_list.c` を以下のように書き換えた。
 
-#sourcecode[
-```c
-#include "linked_list.h"
-#include <stdlib.h>
-
-int main(void) {
-    insert_cell_top(1);
-    insert_cell(head, 3);
-    insert_cell(head, 2);
-    insert_cell(head->next->next, 4);
-    display(); // 1 2 3 4
-
-    delete_cell(head);
-    delete_cell(head->next);
-    display(); // 1 3
-
-    insert_cell_top(0);
-    display(); // 0 1 3
-
-    delete_cell_top();
-    display(); // 1 3
-
-    return EXIT_SUCCESS;
-}
-```
-]
+#sourcefile(read("./main_linked_list.testcase.c"), file:"./main_linked_list.testcase.c")
 
 この出力は以下の通りである。
 
-#sourcecode[
-```
-1 2 3 4
-1 3
-0 1 3
-1 3
-```
-]
+#sourcefile(read("./linked_list.output"), file:"./linked_list.output")
 
 1 行目の `1 2 3 4` の出力は `insert_cell` の動作を確認するためのものである。
 - 5 行目の処理により `1` は先頭に入ることが期待される。
@@ -123,6 +91,84 @@ int main(void) {
 実装したコードを以下に示す。
 
 #sourcefile(read("./queue.c"), file:"./queue.c")
+
+また、動作を確認するために `main_queue.c` を以下のように書き換えた。
+
+#sourcefile(read("./main_queue.testcase_01.c"), file:"./main_queue.testcase_01.c")
+
+この出力は以下の通りである。
+
+#sourcefile(read("./queue.01.output"), file:"./queue.01.output")
+
+1 行目の `1 2` の出力は `enqueue` の動作を確認するためのものである。
+- 9, 10 行目の処理により、キューに `1`, `2` がこの順に格納される。
+- 以上の動作により、次の行で `1 2` が出力されることが期待されるが、出力結果がそれと同じであるので正しく機能していると考えられる。
+
+2 行目の出力 `1` と 3 行目の出力 `2` により、`dequeue` が正しく動作していることが確認できる。
+
+以上より、「キューに整数を 1 つ格納し、それが取り出せること」「キューに整数を複数連続して格納し、それが格納した順番で取り出せること」が確認できる。
+
+3, 4 行目においてはこの出力は正しく行えていることが確認できる。
+この出力は 10 個連続で格納しているが、これはその前の処理によって明らかにデータが末尾と先頭にまたがる。
+この場合においてもキューに格納、取り出しが正しく行えていることがわかる。
+
+次に、`main_queue.c` を以下のように書き換え動作を確認した。
+
+#sourcefile(read("./main_queue.testcase_02.c"), file:"./main_queue.testcase_02.c")
+
+この出力は以下の通りである。
+
+#sourcefile(read("./queue.02.output"), file:"./queue.02.output")
+
+これはサイズ 3 のキューに 4 つ数字を格納しようとしているが、
+警告がなされ、プログラムが異常終了した。
+
+また、終了コードは 1 であり、警告は標準エラー出力に出力された。以下にそれを確認した様子を示す。
+
+#sourcecode[
+```
+$ ./queue
+1 2 3
+[Error] Queue is full!
+
+$ ./queue 1>/dev/null
+[Error] Queue is full!
+
+$ echo $?         
+1
+```
+]
+
+さらに、`main_queue.c` を以下のように書き換え動作を確認した。
+
+#sourcefile(read("./main_queue.testcase_03.c"), file:"./main_queue.testcase_03.c")
+
+この出力は以下の通りである。
+
+#sourcefile(read("./queue.03.output"), file:"./queue.03.output")
+
+これは 2 つ数字を格納したのち、3 回取り出そうとしているが、
+警告がなされ、プログラムが異常終了した。
+
+また、終了コードは 1 であり、警告は標準エラー出力に出力された。以下にそれを確認した様子を示す。
+
+#sourcecode[
+```
+$ ./queue
+1 2
+1
+2
+[Error] Queue is empty!
+
+$ ./queue 1>/dev/null
+[Error] Queue is empty!
+
+$ echo $?         
+1
+```
+]
+
+よって、課題で示された確認すべき項目は全て正しく動作している。
 
 == 発展課題
 

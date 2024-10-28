@@ -4,8 +4,8 @@
 
 Queue *create_queue(int len) {
     Queue *q = (Queue *)malloc(sizeof(Queue));
-    q->buffer = (int *)malloc(len * sizeof(int));
-    q->length = len;
+    q->buffer = (int *)malloc((len + 1) * sizeof(int));
+    q->length = len + 1;
     q->front = 0;
     q->rear = 0;
     return q;
