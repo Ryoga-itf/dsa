@@ -177,3 +177,15 @@ $ echo $?
 実装したコードを以下に示す。
 
 #sourcefile(read("./doublylinked_list.c"), file:"./doublylinked_list.c")
+
+さらに、`main_doublylinked_list.c` を以下のように書き換え動作を確認した。
+
+#sourcefile(read("./main_doublylinked_list.testcase.c"), file:"./main_doublylinked_list.testcase.c")
+
+この出力は以下の通りである。
+
+#sourcefile(read("./doublylinked_list.output"), file:"./doublylinked_list.output")
+
+確認している内容は、ソースコード中記載のコメントの通りである。
+
+この出力により正しく動作していることが確認できる。
