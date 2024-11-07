@@ -36,7 +36,7 @@ void insert_hash(DictOpenAddr *dict, int d) {
             return;
         }
     }
-    fprintf(stderr, "[Error] Dictionary is full!");
+    fprintf(stderr, "[Error] Dictionary is full!\n");
     exit(EXIT_FAILURE);
 }
 

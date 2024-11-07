@@ -15,7 +15,7 @@
     ),
   ),
   deadline: "2024 年 11 月 7 日",
-  date: "2024 年 11 月 6 日",
+  date: "2024 年 11 月 7 日",
 )
 
 本課題を行った環境を以下に示す。
@@ -49,10 +49,53 @@ There is NO WARRANTY, to the extent permitted by law.
 
 #sourcefile(read("./open_addressing.sample.output"), file:"./open_addressing.sample.output")
 
-// また、動作を確認するために `main_linked_list.c` を以下のように書き換えた。
-//
-// #sourcefile(read("./main_linked_list.testcase.c"), file:"./main_linked_list.testcase.c")
-//
-// この出力は以下の通りである。
-//
-// #sourcefile(read("./linked_list.output"), file:"./linked_list.output")
+要件として提示された
+
+- 辞書に整数を格納できること
+- 格納した整数を探索できること
+
+は正しく動作していることが確認できる。
+
+次に、その他の要件を確認するために `main_open_addressing.c` を以下のように書き換えた。
+
+#sourcefile(read("./main_open_addressing.testcase.c"), file:"./main_open_addressing.testcase.c")
+
+この出力は以下の通りである。
+
+#sourcefile(read("./open_addressing.testcase.output"), file:"./open_addressing.testcase.output")
+
+このプログラムの前半部分は同じハッシュを持つ 1, 6, 11 を格納し、それを探索している。
+この出力の前半部分により、要件として提示された
+
+- 同じハッシュ値をもつ整数を，それぞれ他の配列要素に格納できること
+- 同じハッシュ値をもつ複数の整数を探索できること
+
+は正しく動作していることが確認できる。
+
+また、後半部分のコードでは配列に空きがなく挿入できない状態にデータを挿入しようとしている。
+ここでは、警告がなされ、プログラムが異常終了した。
+
+また、終了コードは 1 であり、警告は標準エラー出力に出力された。以下にそれを確認した様子を示す。
+
+#sourcecode[
+```
+$ ./open_addressing
+1 1 6 11 1
+Search 1 ...    1
+Search 6 ...    2
+Search 11 ...   3
+[Error] Dictionary is full!
+
+$ ./open_addressing 1>/dev/null
+[Error] Dictionary is full!
+
+$ echo $?         
+1
+```
+]
+
+よって、要件として提示された
+
+- データを挿入しようとして配列に空きがなく挿入できない時は，標準エラー出力にエラーメッセージを表示し，exit関数を用いてプログラムを異常終了させること
+
+が正しく動作していることが確認できる。
