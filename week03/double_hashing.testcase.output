@@ -1,0 +1,54 @@
+alpha: 0.0 =======
+Timer reset
+Time precision:	0.000000001 sec
+Elapsed time: 	0.002457 sec
+
+alpha: 0.1 =======
+Timer reset
+Time precision:	0.000000001 sec
+Elapsed time: 	0.003712 sec
+
+alpha: 0.2 =======
+Timer reset
+Time precision:	0.000000001 sec
+Elapsed time: 	0.003386 sec
+
+alpha: 0.3 =======
+Timer reset
+Time precision:	0.000000001 sec
+Elapsed time: 	0.003050 sec
+
+alpha: 0.4 =======
+Timer reset
+Time precision:	0.000000001 sec
+Elapsed time: 	0.005113 sec
+
+alpha: 0.5 =======
+Timer reset
+Time precision:	0.000000001 sec
+Elapsed time: 	0.007241 sec
+
+alpha: 0.6 =======
+Timer reset
+Time precision:	0.000000001 sec
+Elapsed time: 	0.004662 sec
+
+alpha: 0.7 =======
+Timer reset
+Time precision:	0.000000001 sec
+Elapsed time: 	0.004256 sec
+
+alpha: 0.8 =======
+Timer reset
+Time precision:	0.000000001 sec
+Elapsed time: 	0.004886 sec
+
+alpha: 0.9 =======
+Timer reset
+Time precision:	0.000000001 sec
+Elapsed time: 	0.007087 sec
+
+alpha: 1.0 =======
+Timer reset
+Time precision:	0.000000001 sec
+Elapsed time: 	4.602269 sec
