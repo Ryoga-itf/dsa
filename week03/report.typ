@@ -42,7 +42,7 @@ There is NO WARRANTY, to the extent permitted by law.
 
 == 基本課題
 
-実装したコードを以下に示す。
+実装したコードを以下に示す。実装の方針・実装の説明についてはコードを読めば理解できるため省略する。
 
 #sourcefile(read("./open_addressing.c"), file:"./open_addressing.c")
 
@@ -103,7 +103,7 @@ $ echo $?
 
 == 発展課題
 
-実装したコードを以下に示す。
+実装したコードを以下に示す。実装の方針・実装の説明についてはコードを読めば理解できるため省略する。
 
 #sourcefile(read("./double_hashing.c"), file:"./double_hashing.c")
 
