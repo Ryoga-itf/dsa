@@ -1,0 +1,7 @@
+e 1 2 3 11 12 21 e e e
+Search 1 ...	1
+Search 2 ...	2
+Search 21 ...	6
+Search 5 ...	-1
+e 1 2 d 11 12 21 e e e
+e 1 2 d d 12 21 e e e
