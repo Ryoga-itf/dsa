@@ -58,12 +58,12 @@ dkms.conf
 class*/
 *.zip
 
-week*/*
-!week*/*.c
-!week*/*.h
-!week*/*.output
-!week*/*.typ
-!week*/Makefile
+report*/*
+!report*/*.c
+!report*/*.h
+!report*/*.output
+!report*/*.typ
+!report*/Makefile
 
 # 私の個人情報が含まれているので
 report*.txt
