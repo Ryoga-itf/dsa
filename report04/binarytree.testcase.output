@@ -1,0 +1,6 @@
+PRE: A C D E I B F H G
+IN: D C E I A H F G B
+POST: D I E C H G F B A
+BFS: A C B D E F I H G
+TREE: A(C(D(null,null),E(null,I(null,null))),B(F(H(null,null),G(null,null)),null))
+height: 4

@@ -1,0 +1,6 @@
+PRE: C A I D F L G
+IN: I A F D C L G
+POST: I F D A G L C
+BFS: C A L I D G F
+TREE: C(A(I(null,null),D(F(null,null),null)),L(null,G(null,null)))
+height: 4
