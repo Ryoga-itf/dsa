@@ -40,7 +40,7 @@ This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
 ```]
 
-== 基本課題
+== 基本課題: 2 分木の実装
 
 この課題では、教科書リスト2.11 ~ 2.12 (pp.40 ~ 41) を基づいた 2 分木の C プログラム `binarytree.c` を作成し、作成したプログラムの動作を確認した。
 
@@ -101,4 +101,11 @@ There is NO WARRANTY, to the extent permitted by law.
 
 #sourcefile(read("./binarytree.testcase.output"), file:"./binarytree.testcase.output")
 
-== 発展課題
+== 発展課題: 2 分木の鏡像
+
+実装した `binarytree_mirror.c` を以下に示す。
+
+#sourcefile(read("./binarytree_mirror.c"), file:"./binarytree_mirror.c")
+
+== 基本課題: 2 分探索木の実装
+
