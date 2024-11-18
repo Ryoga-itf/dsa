@@ -109,3 +109,10 @@ There is NO WARRANTY, to the extent permitted by law.
 
 == 基本課題: 2 分探索木の実装
 
+実装した `./binarysearchtree.c` を以下に示す。
+
+#sourcefile(read("./binarysearchtree.c"), file:"./binarysearchtree.c")
+
+参考実装として与えられた `main_binarysearchtree.c` を用いると、以下のような出力が得られた。
+
+#sourcefile(read("./binarysearchtree.output"), file:"./binarysearchtree.output")

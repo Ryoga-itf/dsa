@@ -1,0 +1,7 @@
+IN: 5 10 13 14 20 26
+TREE: 20(10(5(null,null),14(13(null,null),null)),26(null,null))
+search_bst 14: 1
+search_bst 7: 0
+min_bst: 5
+IN: 5 13 14 20 26
+TREE: 20(13(5(null,null),14(null,null)),26(null,null))
