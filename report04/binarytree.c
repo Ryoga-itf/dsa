@@ -34,7 +34,7 @@ void inorder_inner(Node *n) {
 }
 
 void inorder(Node *n) {
-    printf("IN: ");
+    printf("IN:");
     inorder_inner(n);
     printf("\n");
 }
@@ -48,7 +48,7 @@ void postorder_inner(Node *n) {
 }
 
 void postorder(Node *n) {
-    printf("POST: ");
+    printf("POST:");
     postorder_inner(n);
     printf("\n");
 }
@@ -97,7 +97,7 @@ void delete_queue(Queue *q) {
 }
 
 void breadth_first_search(Node *n) {
-    printf("BFS: ");
+    printf("BFS:");
     Queue *queue = create_queue(100);
     enqueue(queue, n);
     while (!isEmpty(queue)) {
