@@ -130,7 +130,22 @@ void display(Node *n) {
     printf("\n");
 }
 
-int height(Node *n) { return 0; }
+void height_inner(Node *n, int current, int *res) {
+    if (n != NULL) {
+        current++;
+        height_inner(n->left, current, res);
+        height_inner(n->right, current, res);
+        if (*res < current) {
+            *res = current;
+        }
+    }
+}
+
+int height(Node *n) {
+    int res = 0;
+    height_inner(n, 0, &res);
+    return res;
+}
 
 void delete_tree(Node *n) {
     if (n != NULL) {
