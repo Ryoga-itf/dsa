@@ -116,3 +116,28 @@ There is NO WARRANTY, to the extent permitted by law.
 参考実装として与えられた `main_binarysearchtree.c` を用いると、以下のような出力が得られた。
 
 #sourcefile(read("./binarysearchtree.output"), file:"./binarysearchtree.output")
+
+== 発展課題: bst_advanced
+
+この課題では、「各節点にその節点を根とする部分木の高さの情報を持たせた2分探索木」を実現するため、
+以下の設計方針に従ってプログラムを構築した。
+
+=== 設計の基本方針
+
+- 高さ情報の管理
+  - 各ノードに「そのノードを根とする部分木の高さ」を格納するheightというフィールドを追加。
+  - ノードの挿入や削除に応じて、親ノードまで遡りながら部分木の高さを更新する。
+- 木構造の基本操作
+  - 通常の二分探索木と同様、挿入（insert_bst）や削除（delete_bst）を再帰的に実装。
+  - 削除では、右部分木の最小値を用いて節点の置き換えを行うことで木構造を維持。
+- 効率的な高さ管理
+  - 高さの更新は、子ノードの高さを参照して計算可能なため、各操作の計算量は木の深さに依存（平均O(log n)）。
+  - 高さの取得（`get_height`）はO(1)で済むように設計。
+
+実装した `./bst_advanced.c` を以下に示す。
+
+#sourcefile(read("./bst_advanced.c"), file:"./bst_advanced.c")
+
+参考実装として与えられた `main_bst_advanced.c` を用いると、以下のような出力が得られた。
+
+#sourcefile(read("./bst_advanced.output"), file:"./binarysbst_advanced.output")
