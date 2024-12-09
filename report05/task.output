@@ -1,0 +1,170 @@
+[[task01]]
+numdata: 1000
+  heap_sort: 30209
+  quick_sort: 21939
+numdata: 2000
+  heap_sort: 66479
+  quick_sort: 52329
+numdata: 3000
+  heap_sort: 105287
+  quick_sort: 88047
+numdata: 4000
+  heap_sort: 144959
+  quick_sort: 122175
+numdata: 5000
+  heap_sort: 186218
+  quick_sort: 156079
+numdata: 6000
+  heap_sort: 228488
+  quick_sort: 187113
+numdata: 7000
+  heap_sort: 271532
+  quick_sort: 220033
+numdata: 8000
+  heap_sort: 313772
+  quick_sort: 248757
+numdata: 9000
+  heap_sort: 357599
+  quick_sort: 279035
+numdata: 10000
+  heap_sort: 402749
+  quick_sort: 311243
+
+[[task02]]
+numdata: 100000
+Timer reset
+Time precision:	0.000000001 sec
+  heap_sort: 0.026614 sec
+Timer reset
+Time precision:	0.000000001 sec
+  quick_sort: 0.018287 sec
+numdata: 300000
+Timer reset
+Time precision:	0.000000001 sec
+  heap_sort: 0.090851 sec
+Timer reset
+Time precision:	0.000000001 sec
+  quick_sort: 0.079291 sec
+numdata: 500000
+Timer reset
+Time precision:	0.000000001 sec
+  heap_sort: 0.155190 sec
+Timer reset
+Time precision:	0.000000001 sec
+  quick_sort: 0.170848 sec
+numdata: 700000
+Timer reset
+Time precision:	0.000000001 sec
+  heap_sort: 0.225837 sec
+Timer reset
+Time precision:	0.000000001 sec
+  quick_sort: 0.294652 sec
+numdata: 900000
+Timer reset
+Time precision:	0.000000001 sec
+  heap_sort: 0.305890 sec
+Timer reset
+Time precision:	0.000000001 sec
+  quick_sort: 0.457288 sec
+numdata: 1100000
+Timer reset
+Time precision:	0.000000001 sec
+  heap_sort: 0.378089 sec
+Timer reset
+Time precision:	0.000000001 sec
+  quick_sort: 0.674826 sec
+numdata: 1300000
+Timer reset
+Time precision:	0.000000001 sec
+  heap_sort: 0.457758 sec
+Timer reset
+Time precision:	0.000000001 sec
+  quick_sort: 0.889375 sec
+numdata: 1500000
+Timer reset
+Time precision:	0.000000001 sec
+  heap_sort: 0.580243 sec
+Timer reset
+Time precision:	0.000000001 sec
+  quick_sort: 1.142111 sec
+numdata: 1700000
+Timer reset
+Time precision:	0.000000001 sec
+  heap_sort: 0.703314 sec
+Timer reset
+Time precision:	0.000000001 sec
+  quick_sort: 1.451628 sec
+numdata: 1900000
+Timer reset
+Time precision:	0.000000001 sec
+  heap_sort: 0.793863 sec
+Timer reset
+Time precision:	0.000000001 sec
+  quick_sort: 1.789795 sec
+numdata: 2100000
+Timer reset
+Time precision:	0.000000001 sec
+  heap_sort: 0.945651 sec
+Timer reset
+Time precision:	0.000000001 sec
+  quick_sort: 2.179687 sec
+numdata: 2300000
+Timer reset
+Time precision:	0.000000001 sec
+  heap_sort: 0.879340 sec
+Timer reset
+Time precision:	0.000000001 sec
+  quick_sort: 2.632450 sec
+numdata: 2500000
+Timer reset
+Time precision:	0.000000001 sec
+  heap_sort: 1.134828 sec
+Timer reset
+Time precision:	0.000000001 sec
+  quick_sort: 3.255237 sec
+numdata: 2700000
+Timer reset
+Time precision:	0.000000001 sec
+  heap_sort: 1.240648 sec
+Timer reset
+Time precision:	0.000000001 sec
+  quick_sort: 3.734194 sec
+numdata: 2900000
+Timer reset
+Time precision:	0.000000001 sec
+  heap_sort: 1.631296 sec
+Timer reset
+Time precision:	0.000000001 sec
+  quick_sort: 4.312473 sec
+
+[[task03]]
+numdata: 1000
+  heap_sort: 32123
+  quick_sort: 1000999
+numdata: 2000
+  heap_sort: 69899
+  quick_sort: 4001999
+numdata: 3000
+  heap_sort: 111755
+  quick_sort: 9002999
+numdata: 4000
+  heap_sort: 153425
+  quick_sort: 16003999
+numdata: 5000
+  heap_sort: 197795
+  quick_sort: 25004999
+numdata: 6000
+  heap_sort: 242483
+  quick_sort: 36005999
+numdata: 7000
+  heap_sort: 287291
+  quick_sort: 49006999
+numdata: 8000
+  heap_sort: 331913
+  quick_sort: 64007999
+numdata: 9000
+  heap_sort: 378665
+  quick_sort: 81008999
+numdata: 10000
+  heap_sort: 425867
+  quick_sort: 100009999
