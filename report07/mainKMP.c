@@ -19,8 +19,13 @@ bool cmp(char, char);
  * @return なし
  */
 void compnext(char *pat, unsigned int *next) {
-    // 関数を完成させる．
-    return;
+    next[0] = -1;
+    for (int i = 1, j = -1; pat[i] != '\0'; i++, j++) {
+        while (j >= 0 && pat[i - 1] != pat[j]) {
+            j = next[j];
+        }
+        next[i] = j + 1;
+    }
 }
 
 /**
@@ -30,8 +35,21 @@ void compnext(char *pat, unsigned int *next) {
  * @return 照合に成功した位置．失敗した場合は -1．
  */
 int kmp(char *text, unsigned int textlen, char *pat, unsigned int patlen) {
-    unsigned int next[PAT_MAX]; // NEXT配列
-                                // 関数を完成させる
+    unsigned int next[PAT_MAX];
+    compnext(pat, next);
+    for (int i = 0, j = 0; i + j < textlen;) {
+        if (cmp(pat[j], text[i + j])) {
+            if (++j == patlen) {
+                return i;
+            }
+        } else {
+            i = i + j - next[j];
+            if (j > 0) {
+                j = next[j];
+            }
+        }
+    }
+    return -1;
 }
 
 /**

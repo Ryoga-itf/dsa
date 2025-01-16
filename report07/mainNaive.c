@@ -19,7 +19,20 @@ bool cmp(char, char);
  * @return 照合に成功した位置．失敗した場合は -1．
  */
 int naive(char *text, unsigned int textlen, char *pat, unsigned int patlen) {
-    // コードを完成させる．
+    /* for (int i = 0; i < textlen - patlen; i++) { */
+    for (int i = 0; i < textlen; i++) {
+        bool match = true;
+        for (int j = 0; j < patlen; j++) {
+            if (i + j >= textlen || !cmp(pat[j], text[i + j])) {
+                match = false;
+                break;
+            }
+        }
+        if (match) {
+            return i;
+        }
+    }
+    return -1;
 }
 
 /**
