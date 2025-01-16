@@ -48,8 +48,24 @@ There is NO WARRANTY, to the extent permitted by law.
 
 実装した関数のコードを以下に示す。
 
-// #sourcecode[```c
-// ```]
+#sourcecode[```c
+int naive(char *text, unsigned int textlen, char *pat, unsigned int patlen) {
+    /* for (int i = 0; i < textlen - patlen; i++) { */
+    for (int i = 0; i < textlen; i++) {
+        bool match = true;
+        for (int j = 0; j < patlen; j++) {
+            if (i + j >= textlen || !cmp(pat[j], text[i + j])) {
+                match = false;
+                break;
+            }
+        }
+        if (match) {
+            return i;
+        }
+    }
+    return -1;
+}
+```]
 
 === 実行結果
 
@@ -124,8 +140,35 @@ Pattern found at -1.
 
 実装した関数のコードを以下に示す。
 
-// #sourcecode[```c
-// ```]
+#sourcecode[```c
+void compnext(char *pat, unsigned int *next) {
+    next[0] = -1;
+    for (int i = 1, j = -1; pat[i] != '\0'; i++, j++) {
+        while (j >= 0 && pat[i - 1] != pat[j]) {
+            j = next[j];
+        }
+        next[i] = j + 1;
+    }
+}
+
+int kmp(char *text, unsigned int textlen, char *pat, unsigned int patlen) {
+    unsigned int next[PAT_MAX];
+    compnext(pat, next);
+    for (int i = 0, j = 0; i + j < textlen;) {
+        if (cmp(pat[j], text[i + j])) {
+            if (++j == patlen) {
+                return i;
+            }
+        } else {
+            i = i + j - next[j];
+            if (j > 0) {
+                j = next[j];
+            }
+        }
+    }
+    return -1;
+}
+```]
 
 === 実行結果
 
