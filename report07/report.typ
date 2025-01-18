@@ -44,9 +44,13 @@ There is NO WARRANTY, to the extent permitted by law.
 
 === 実装の方針
 
+単純な二重ループで実装すればよい。
+具体的には、外側のループで開始位置をループし、その後内側のループで開始位置からパターンが出現するかを確認する。
+
 === 実装コード及びその説明
 
 実装した関数のコードを以下に示す。
+なお、コメントアウトしている行があるが、それについては後述する。
 
 #sourcecode[```c
 int naive(char *text, unsigned int textlen, char *pat, unsigned int patlen) {
