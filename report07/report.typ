@@ -153,7 +153,8 @@ Pattern found at -1.
 
 これは期待されているものと同一である。
 
-また、`text` として `abracadabra`、`pat` として `ada` を用いた際の動作について説明する。
+次に、作成したプログラムを簡単な動作例を用いて説明し、それが正しく動作することを示す。
+ここでは、`text` として `aababacababc`、`pat` として `ababc` を用いた際の動作について説明する。
 実行結果は以下の通りである。
 
 #sourcecode[```
@@ -162,20 +163,31 @@ $ echo abracadabra > text
 $ echo ada > pat         
 
 $ ./mainNaive -v text pat
-text size: 12
-pattern size: 3
+text size: 13
+pattern size: 5
 cmp(a, a)
-cmp(d, b)
+cmp(b, a)
+cmp(a, a)
+cmp(b, b)
+cmp(a, a)
+cmp(b, b)
+cmp(c, a)
 cmp(a, b)
-cmp(a, r)
 cmp(a, a)
-cmp(d, c)
+cmp(b, b)
+cmp(a, a)
+cmp(b, c)
+cmp(a, b)
+cmp(a, a)
+cmp(b, c)
 cmp(a, c)
 cmp(a, a)
-cmp(d, d)
+cmp(b, b)
 cmp(a, a)
-Pattern found at 5.
-# of comparison(s): 10.
+cmp(b, b)
+cmp(c, c)
+Pattern found at 7.
+# of comparison(s): 21.
 ```]
 
 動作の様子を @table1 に示す。
@@ -194,26 +206,28 @@ Pattern found at 5.
 
 #figure(
   table(
-    columns:11,
+    columns:12,
     align: center,
     stroke: none,
     gutter: 0.2em,
     fill: (x, y) => if y == 0 {gray},
     inset: (left: 1em, right: 1em),
-      [a],   [b],   [r],   [a],   [c],   [a],   [d],   [a],   [b],   [r],   [a],
-    ok[a], ng[d], sk[a],   [ ],   [ ],   [ ],   [ ],   [ ],   [ ],   [ ],   [ ],
-      [ ], ng[a], sk[d], sk[a],   [ ],   [ ],   [ ],   [ ],   [ ],   [ ],   [ ],
-      [ ],   [ ], ng[a], sk[d], sk[a],   [ ],   [ ],   [ ],   [ ],   [ ],   [ ],
-      [ ],   [ ],   [ ], ok[a], ng[d], sk[a],   [ ],   [ ],   [ ],   [ ],   [ ],
-      [ ],   [ ],   [ ],   [ ], ng[a], sk[d], sk[a],   [ ],   [ ],   [ ],   [ ],
-      [ ],   [ ],   [ ],   [ ],   [ ], ok[a], ok[d], ok[a],   [ ],   [ ],   [ ],
+      [a],   [a],   [b],   [a],   [b],   [a],   [c],   [a],   [b],   [a],   [b],   [c],
+    ok[a], ng[b], sk[a], sk[b], sk[c],   [ ],   [ ],   [ ],   [ ],   [ ],   [ ],   [ ],
+      [ ], ok[a], ok[b], ok[a], ok[b], ng[c],   [ ],   [ ],   [ ],   [ ],   [ ],   [ ],
+      [ ],   [ ], ng[a], sk[b], sk[a], sk[b], sk[c],   [ ],   [ ],   [ ],   [ ],   [ ],
+      [ ],   [ ],   [ ], ok[a], ok[b], ok[a], ng[b], sk[c],   [ ],   [ ],   [ ],   [ ],
+      [ ],   [ ],   [ ],   [ ], ng[a], sk[b], sk[a], sk[b], sk[c],   [ ],   [ ],   [ ],
+      [ ],   [ ],   [ ],   [ ],   [ ], ok[a], ng[b], sk[a], sk[b], sk[c],   [ ],   [ ],
+      [ ],   [ ],   [ ],   [ ],   [ ],   [ ], ng[a], sk[b], sk[a], sk[b], sk[c],   [ ],
+      [ ],   [ ],   [ ],   [ ],   [ ],   [ ],   [ ], ok[a], ok[b], ok[a], ok[b], ok[c],
   ),
   caption: [動作の様子]
 )<table1>
 
 この表は、`cmp` により等しい箇所は緑色の背景で、異なる箇所は赤色の背景で、また比較がスキップされた箇所は灰色の背景で示している。
 
-動作例では比較回数が 10 回であるが、この表も同様に 10 回の比較で終了している。
+動作例では比較回数が 21 回であるが、この表も同様に 21 回の比較で終了している。
 
 === 考察
 
@@ -250,6 +264,15 @@ Pattern found at 5.
 
 === 実装の方針
 
+KMP 法では、検索パターンである文字列 $T$ について、部分マッチテーブルという配列を生成し、それを元に比較を飛ばせるところを飛ばすという流れで文字列探索を行う。
+
+部分マッチテーブルとは $1 <= i <= |T|$ に対して $T[0:i]$ の真の接頭辞と接尾辞が最大で先頭から何文字一致するかという値を持つ配列のことである。
+真の接尾辞とはその文字列自身を含まない prefix のことである。
+
+それを生成する関数として `compnext` を実装する。
+
+`kmp` 関数では、テキスト全体は 1 文字ずつ探索し、`next` 配列を用いてパターン内の次の比較位置へ移動する。
+
 === 実装コード及びその説明
 
 実装した関数のコードを以下に示す。
@@ -284,16 +307,210 @@ int kmp(char *text, unsigned int textlen, char *pat, unsigned int patlen) {
 }
 ```]
 
+コードの概要を以下に示す。
+
+- *`compnext` 関数による前処理*
+  - パターンの部分一致情報（`next` 配列）を計算する。
+  - `next[j]` は、`pat[0..j]` の部分文字列の接頭辞と接尾辞が一致する最大長を表す。
+- *テキストの探索 (`while` ループ)*
+  - テキスト全体を 1 文字ずつ探索する。
+  - 現在の位置 `i` とパターンの位置 `j` を比較する。
+- *一致時の処理*
+  - 現在の文字が一致した場合、`j` を進める。
+  - `j == patlen` に達した場合、パターン全体が一致したことを意味し、`i` を返す。
+- *不一致時の処理*
+  - `j > 0` の場合、`next` 配列を用いてパターン内の次の比較位置へ移動する。
+  - `j == 0` の場合、`i` を進め、テキストの次の位置から比較を再開する。
+- *探索失敗時の処理*
+  - テキスト全体を走査しても一致しなかった場合、`-1` を返す。
+
 === 実行結果
 
 `make` コマンドを用いて適切にコンパイルしたのち、以下の通り実行を行った。また結果も示している。
 
-// #sourcecode[```
-// ```]
+#sourcecode[```
+$ echo This is a pen. > text
 
-これは期待されているものと同一である。
+$ echo pen > pat
+
+$ ./mainKMP text pat
+Pattern found at 10.
+
+$ ./mainKMP -v text pat
+text size: 15
+pattern size: 3
+cmp(p, T)
+cmp(p, h)
+cmp(p, i)
+cmp(p, s)
+cmp(p,  )
+cmp(p, i)
+cmp(p, s)
+cmp(p,  )
+cmp(p, a)
+cmp(p,  )
+cmp(p, p)
+cmp(e, e)
+cmp(n, n)
+Pattern found at 10.
+# of comparison(s): 13.
+
+$ echo ix > pat
+
+$ ./mainKMP text pad
+Pattern found at -1.
+
+$ ./mainKMP -v text pat
+text size: 15
+pattern size: 2
+cmp(i, T)
+cmp(i, h)
+cmp(i, i)
+cmp(x, s)
+cmp(i, s)
+cmp(i,  )
+cmp(i, i)
+cmp(x, s)
+cmp(i, s)
+cmp(i,  )
+cmp(i, a)
+cmp(i,  )
+cmp(i, p)
+cmp(i, e)
+cmp(i, n)
+cmp(i, .)
+cmp(i, 
+)
+Pattern found at -1.
+# of comparison(s): 17.
+```]
+
+次に、作成したプログラムを簡単な動作例を用いて説明し、それが正しく動作することを示す。
+
+ここでは、`text` として `aababacababc`、`pat` として `ababc` を用いた際の動作について説明する。
+実行結果は以下の通りである。
+
+#sourcecode[```
+$ echo aababacababc > text
+
+$ echo ababc > pat        
+
+$ ./mainNaive -v text pat
+text size: 13
+pattern size: 5
+cmp(a, a)
+cmp(b, a)
+cmp(a, a)
+cmp(b, b)
+cmp(a, a)
+cmp(b, b)
+cmp(c, a)
+cmp(a, a)
+cmp(b, c)
+cmp(b, c)
+cmp(a, c)
+cmp(a, a)
+cmp(b, b)
+cmp(a, a)
+cmp(b, b)
+cmp(c, c)
+Pattern found at 7.
+# of comparison(s): 16.
+```]
+
+動作の様子を @table2 に示す。
+
+#let ok(x) = table.cell(
+  fill: green.lighten(60%),
+)[#x]
+
+#let ng(x) = table.cell(
+  fill: red.lighten(60%),
+)[#x]
+
+#let sk(x) = table.cell(
+  fill: gray.lighten(60%),
+)[#x]
+
+#figure(
+  table(
+    columns:12,
+    align: center,
+    stroke: none,
+    gutter: 0.2em,
+    fill: (x, y) => if y == 0 {gray},
+    inset: (left: 1em, right: 1em),
+      [a],   [a],   [b],   [a],   [b],   [a],   [c],   [a],   [b],   [a],   [b],   [c],
+    ok[a], ng[b], sk[a], sk[b], sk[c],   [ ],   [ ],   [ ],   [ ],   [ ],   [ ],   [ ],
+      [ ], ok[a], ok[b], ok[a], ok[b], ng[c],   [ ],   [ ],   [ ],   [ ],   [ ],   [ ],
+      [ ],   [ ],   [ ], sk[a], sk[b], ok[a], ng[b], sk[c],   [ ],   [ ],   [ ],   [ ],
+      [ ],   [ ],   [ ],   [ ],   [ ], sk[a], ng[b], sk[a], sk[b], sk[c],   [ ],   [ ],
+      [ ],   [ ],   [ ],   [ ],   [ ],   [ ], ng[a], sk[b], sk[a], sk[b], sk[c],   [ ],
+      [ ],   [ ],   [ ],   [ ],   [ ],   [ ],   [ ], ok[a], ok[b], ok[a], ok[b], ok[c],
+  ),
+  caption: [KMP 法による動作の様子]
+)<table2>
+
+この表は、`cmp` により等しい箇所は緑色の背景で、異なる箇所は赤色の背景で、また比較がスキップされた箇所は灰色の背景で示している。
+
+動作例では比較回数が 16 回であるが、この表も同様に 16 回の比較で終了している。
+
+同じ入力で行った単純照合法の比較回数は 21 回であったが、16 回に減っている。
+また、@table1 と比較すると、冗長な比較が省略されていることがわかる。
 
 === 考察
+
+KMP 法では、検索パターンである文字列 $T$ について、部分マッチテーブルという配列を生成し、それを元に比較を飛ばせるところを飛ばすという流れで文字列探索を行う。
+
+このアルゴリズムの利点を以下に挙げる: 
+
+/ 効率性:
+
+  - テキスト長を $n$、パターン長を $m$ とすると、KMP 法の計算量は $Omicron(n+m)$ である。
+    - 前処理（`compnext`）に $Omicron(m)$。
+    - テキスト探索に $Omicron(n)$。
+  - 単純照合法の $Omicron((n−m+1)m)$ と比較すると、大幅に効率的である。
+
+/ 冗長な比較の排除:
+
+  - パターン内の部分一致情報を活用して不必要な再比較を回避する。
+  - 不一致時にバックトラックする際、`next` 配列を使用して効率的に次の位置を決定する。
+
+/ 大規模データへの適用:
+
+  - KMP 法は長いテキストやパターンに対しても効率的に動作すると考えられる。
+
+また、以下にこのアルゴリズムの欠点を挙げる:
+
+/ 前処理の必要性:
+
+  - `compnext` 関数による部分一致テーブルの計算が必要であり、実装がやや複雑になる。
+  - 短いパターンや簡単な照合にはオーバーヘッドになる場合がある。
+
+/ 実装の難しさ:
+
+  - KMP 法の核心部分である `compnext` のロジックは、単純照合法に比べて理解と実装が難しい。
+  - プログラムのデバッグや保守も複雑化する。
+
+/ 制限:
+
+  - パターン長が `PAT_MAX` を超える場合、部分一致テーブルの配列サイズを動的に確保する必要があり、コードの修正が必要である。
+
+@table3 に、単純照合法との比較をまとめる。
+
+#figure(
+  table(
+    columns: (auto, auto, auto),
+    inset: 10pt,
+    [*比較項目*], [*単純照合法*], [*KMP法*],
+    [*計算量*], [最悪 $Omicron((n-m+1)m)$], [$Omicron(n+m)$],
+    [*効率性*], [冗長な比較が多い], [部分一致情報で再比較を排除],
+    [*実装の容易さ*], [簡単], [やや複雑],
+    [*小規模データ*], [効率が良い場合もある], [オーバーヘッドが発生する場合がある],
+    [*大規模データ*], [非効率], [効率的],
+  ),
+  caption: [単純照合法とKMP法の比較]
+) <table3>
 
 == 発展課題1
 
