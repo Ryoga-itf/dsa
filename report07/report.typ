@@ -514,4 +514,182 @@ KMP 法では、検索パターンである文字列 $T$ について、部分�
 
 == 発展課題1
 
+以下のシェルスクリプト `adv1.sh` を作成し、ランダムな文字列に対して単純照合法と KMP 法の比較回数を比較した。
+
+#sourcefile(read("./adv1.sh"), file:"./adv1.sh")
+
+数回実行すると、以下のような結果が得られた。
+
+#sourcecode[```
+$ ./adv1.sh
+Generated text of length 525 in 'text'
+Generated pat of length 8 in 'pat'
+Comparisons in Naive: 535.
+Comparisons in KMP: 535.
+
+$ ./adv1.sh
+Generated text of length 500 in 'text'
+Generated pat of length 9 in 'pat'
+Comparisons in Naive: 512.
+Comparisons in KMP: 512.
+
+$ ./adv1.sh
+Generated text of length 981 in 'text'
+Generated pat of length 20 in 'pat'
+Comparisons in Naive: 1011.
+Comparisons in KMP: 1010.
+
+$ ./adv1.sh
+Generated text of length 579 in 'text'
+Generated pat of length 5 in 'pat'
+Comparisons in Naive: 592.
+Comparisons in KMP: 592.
+```]
+
+結果として KMP 法がたまに 1 回ほど比較回数が少ない程度な結果となった。
+
+このような結果になったのは完全にランダムな文字列同士を比較しているため、あまり差が生まれなかったためであると考えられる。
+
 == 発展課題2
+
+単純照合法では、文字列比較が効率的に行われない場合に最悪の計算量が発生する。
+
+この最悪ケースは以下の条件を満たすと考えられる：
+  - テキスト文字列とパターン文字列の内容が非常に似ており、多くの部分一致が発生するが、最終的に一致しない。
+  - パターンがテキスト内のほぼすべての位置で比較される。
+
+このとき、最悪計算量は $Omicron((n-m+1)m)$ となる。
+
+例えば `text = aaaaaaa...aab`、`pat = aaaab` のようなとき最悪ケースとなる。
+
+実際に実行してみると以下のような結果が得られた。
+
+#sourcecode[```
+$ echo  aaaaaaaaab > text
+
+$ echo aaaab > pat      
+
+$ ./mainNaive -v text pat 
+text size: 11
+pattern size: 5
+cmp(a, a)
+cmp(a, a)
+cmp(a, a)
+cmp(a, a)
+cmp(b, a)
+cmp(a, a)
+cmp(a, a)
+cmp(a, a)
+cmp(a, a)
+cmp(b, a)
+cmp(a, a)
+cmp(a, a)
+cmp(a, a)
+cmp(a, a)
+cmp(b, a)
+cmp(a, a)
+cmp(a, a)
+cmp(a, a)
+cmp(a, a)
+cmp(b, a)
+cmp(a, a)
+cmp(a, a)
+cmp(a, a)
+cmp(a, a)
+cmp(b, a)
+cmp(a, a)
+cmp(a, a)
+cmp(a, a)
+cmp(a, a)
+cmp(b, b)
+Pattern found at 5.
+# of comparison(s): 30.
+
+$ ./mainKMP -v text pat
+text size: 11
+pattern size: 5
+cmp(a, a)
+cmp(a, a)
+cmp(a, a)
+cmp(a, a)
+cmp(b, a)
+cmp(a, a)
+cmp(b, a)
+cmp(a, a)
+cmp(b, a)
+cmp(a, a)
+cmp(b, a)
+cmp(a, a)
+cmp(b, a)
+cmp(a, a)
+cmp(b, b)
+Pattern found at 5.
+# of comparison(s): 15.
+```]
+
+単純照合法では 30 回、KMP 法では 15 回となった。
+
+次に、`text = aaaa...aaab` ($N$ 文字)、`pat = aaaaab` の入力を考える。
+以下のシェルスクリプトを作成し、入力のための `text` ファイルを生成および実行した。
+
+#sourcefile(read("./adv2.sh"), file:"./adv2.sh")
+
+複数の $N$ に対して両者の比較回数を比較すると @table4 のようになった。
+
+#let naive_data = (
+  (1000, 5970),
+  (2000, 11970),
+  (3000, 17970),
+  (4000, 23970),
+  (5000, 29970),
+  (6000, 35970),
+  (7000, 41970),
+  (8000, 47970),
+  (9000, 53970),
+  (10000, 59970),
+)
+#let kmp_data = (
+  (1000, 1994),
+  (2000, 3994),
+  (3000, 5994),
+  (4000, 7994),
+  (5000, 9994),
+  (6000, 11994),
+  (7000, 13994),
+  (8000, 15994),
+  (9000, 17994),
+  (10000, 19994),
+)
+
+#figure(
+  table(
+    columns: (auto, auto, auto),
+    inset: 7pt,
+    align: center,
+    table.header(
+      [*$N$*], [*単純照合法*], [*KMP法*],
+    ),
+    ..range(1, 10).map(t=> (
+      t * 1000,
+      naive_data.at(t).at(1),
+      kmp_data.at(t).at(1),
+    )).flatten().map(v => $#v$)
+  ),
+  caption: [単純照合法とKMP法の比較回数の比較]
+) <table4>
+
+これをグラフにプロットすると以下のようになった。
+なお、青色の実線が単純照合法、赤色の実線が KMP 法の比較回数を表している。
+
+#let x_axis = axis(min: 0, max: 10000, step: 1000, location: "bottom")
+#let y_axis = axis(min: 0, max: 65000, step: 10000, location: "left", helper_lines: false)
+
+#let naive_pl = plot(data: naive_data, axes: (x_axis, y_axis))
+#let naive_display = graph_plot(naive_pl, (100%, 30%), stroke: blue)
+
+#let kmp_pl = plot(data: kmp_data, axes: (x_axis, y_axis))
+#let kmp_display = graph_plot(kmp_pl, (100%, 30%), stroke: red)
+
+#overlay((naive_display, kmp_display), (100%, 30%))
+
+KMP 法のほうが、高速に動作することがわかる。
