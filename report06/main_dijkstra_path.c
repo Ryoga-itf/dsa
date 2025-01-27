@@ -39,6 +39,7 @@ void dijkstra(int p) {
                     parent[x] = u;
                 } else if (k < d[x]) {
                     d[x] = k;
+                    parent[x] = u;
                 }
             }
         }
