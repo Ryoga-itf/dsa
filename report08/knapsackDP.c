@@ -14,15 +14,15 @@ int knapsackDP(int v[], int w[], int k, int i) {
         dp[index] = (int *)malloc(sizeof(int) * (i + 1));
     }
 
-    for (int x = 0; x < k; x++) {
+    for (int x = 0; x <= k; x++) {
         for (int y = 0; y <= i; y++) {
-            if (x == 0) {
+            if (x == 0 || y == 0) {
                 dp[x][y] = 0;
-            }
-            if (y >= w[x]) {
-                dp[x + 1][y] = max(dp[x][y - w[x]] + v[x], dp[x][y]);
+            } else if (y >= w[x - 1]) {
+                dp[x][y] =
+                    max(dp[x - 1][y - w[x - 1]] + v[x - 1], dp[x - 1][y]);
             } else {
-                dp[x + 1][y] = dp[x][y];
+                dp[x][y] = dp[x - 1][y];
             }
         }
     }
