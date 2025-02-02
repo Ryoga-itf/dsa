@@ -9,7 +9,7 @@
  * i: ナップサックの容量
  */
 int knapsackDP(int v[], int w[], int k, int i) {
-    int **dp = (int **)malloc(sizeof(int *) * (++k + 1));
+    int **dp = (int **)malloc(sizeof(int *) * (k + 1));
     for (int index = 0; index <= k; index++) {
         dp[index] = (int *)malloc(sizeof(int) * (i + 1));
     }
@@ -18,9 +18,8 @@ int knapsackDP(int v[], int w[], int k, int i) {
         for (int y = 0; y <= i; y++) {
             if (x == 0 || y == 0) {
                 dp[x][y] = 0;
-            } else if (y >= w[x - 1]) {
-                dp[x][y] =
-                    max(dp[x - 1][y - w[x - 1]] + v[x - 1], dp[x - 1][y]);
+            } else if (y >= w[x]) {
+                dp[x][y] = max(dp[x - 1][y - w[x]] + v[x], dp[x - 1][y]);
             } else {
                 dp[x][y] = dp[x - 1][y];
             }
