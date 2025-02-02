@@ -24,6 +24,7 @@ int main(int argc, char **argv) {
                 printf("重さ %d 価値 %d\n", w[k], v[k]);
             }
         printf("合計価値 %d\n", total);
+        free(S);
     } else {
         fprintf(stderr, "Usage: knapsackDP2 <k: no. of items> <i: capacity>\n");
         return 1;
