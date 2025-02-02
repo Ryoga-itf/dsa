@@ -53,7 +53,6 @@ for (int index = 0; index <= k; index++) {
 
 2. *DPテーブルの計算*
 
-
 #sourcecode(numbers-start: 18)[```c
 for (int x = 0; x <= k; x++) {
     for (int y = 0; y <= i; y++) {
@@ -160,3 +159,6 @@ free(dp);
 
 // TODO:
 
+=== 考察
+
+// TODO:

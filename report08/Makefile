@@ -8,4 +8,5 @@ knapsackDP2: knapsackDP2.o knapsackDP2Main.o
 
 subsetSum: subsetSum.o subsetSumMain.o
 
-clean: rm -f knapsack knapsackDP knapsackDP2 subsetSum *.o
+clean:
+		rm -f knapsack knapsackDP knapsackDP2 subsetSum *.o
