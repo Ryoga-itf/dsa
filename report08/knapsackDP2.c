@@ -75,5 +75,10 @@ bool *knapsackDP2(int v[], int w[], int n, int C) {
         }
     }
 
+    free(G[0]);
+    free(G);
+    free(S[0]);
+    free(S);
+
     return SS;
 }
