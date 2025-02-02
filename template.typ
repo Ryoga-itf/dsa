@@ -10,6 +10,7 @@
   set document(author: authors.map(a => a.name), title: title)
   set page(numbering: "1 / 1", number-align: center)
   set text(font: fontSerif, lang: "ja")
+  show raw: set text(font: ("Hack Nerd Font Mono", "Noto Sans Mono CJK JP"))
 
   show heading: set text(font: fontSan, weight: "medium", lang: "ja")
   show heading.where(level: 1): it => {
