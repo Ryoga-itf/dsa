@@ -10,8 +10,9 @@
  */
 int knapsackDP(int v[], int w[], int k, int i) {
     int **dp = (int **)malloc(sizeof(int *) * (k + 1));
+    int *array = (int *)malloc(sizeof(int) * (k + 1) * (i + 1));
     for (int index = 0; index <= k; index++) {
-        dp[index] = (int *)malloc(sizeof(int) * (i + 1));
+        dp[index] = array + (i + 1) * index;
     }
 
     for (int x = 0; x <= k; x++) {
@@ -27,9 +28,8 @@ int knapsackDP(int v[], int w[], int k, int i) {
     }
 
     int result = dp[k][i];
-    for (int index = 0; index <= k; index++) {
-        free(dp[index]);
-    }
+
+    free(dp[0]);
     free(dp);
 
     return result;
