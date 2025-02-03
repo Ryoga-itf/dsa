@@ -17,13 +17,17 @@ int main(int argc, char *argv[]) {
         bool *S = subsetSum(set, n, k);
         if (S != NULL) {
             printf("部分集合");
-            for (int j = 0; j < len; j++)
-                if (S[j])
+            for (int j = 0; j < len; j++) {
+                if (S[j]) {
                     printf("%d ", set[j]);
-        } else
+                }
+            }
+        } else {
             printf("条件を満たす部分集合はない．\n");
-    } else
+            free(S);
+        }
+    } else {
         fprintf(stderr, "Usage: subsetsum <n> <sum>\n");
-
+    }
     return 0;
 }
