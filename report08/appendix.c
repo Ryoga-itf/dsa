@@ -1,5 +1,5 @@
-
 #include <stdio.h>
+
 int main() {
     /* 教科書：表 6.1の例
        v[1]〜v[4]：価格
