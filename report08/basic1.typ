@@ -107,6 +107,7 @@ int knapsack(int v[], int w[], int k, int i) {
 ) <code1-4>
 
 実行結果が正しいことを確認する。
+なお、具体的な確認方法については Appendix を参照。
 
 / 容量が 3 の場合:
   
