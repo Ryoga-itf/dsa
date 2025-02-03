@@ -47,8 +47,7 @@
 
 #sourcecode(numbers-start: 15)[```c
 bool **dp = (bool **)malloc(sizeof(bool *) * (n + 1));
-bool *array = (bool *)malloc(sizeof(bool) * (n + 1) * (sum + 1));
-memset(array, 0, sizeof(bool) * (n + 1) * (sum + 1));
+bool *array = (bool *)calloc((n + 1) * (sum + 1), sizeof(bool));
 for (int i = 0; i <= n; i++) {
     dp[i] = array + (sum + 1) * i;
     dp[i][0] = true;
@@ -60,7 +59,7 @@ for (int i = 0; i <= n; i++) {
 
 2. *DPテーブルの計算*
 
-#sourcecode(numbers-start: 23)[```c
+#sourcecode(numbers-start: 22)[```c
 for (int i = 0; i < n; i++) {
     for (int j = 0; j <= sum; j++) {
         if (j - set[i] >= 0) {
@@ -76,7 +75,7 @@ for (int i = 0; i < n; i++) {
 
 3. *部分和が存在しない場合の処理*
 
-#sourcecode(numbers-start: 32)[```c
+#sourcecode(numbers-start: 31)[```c
 if (!dp[n][sum]) {
     free(dp[0]);
     free(dp);
@@ -88,26 +87,28 @@ if (!dp[n][sum]) {
 
 4. *部分集合を復元する処理*
 
-#sourcecode(numbers-start: 38)[```c
+#sourcecode(numbers-start: 37)[```c
 bool *S = (bool *)malloc(sizeof(bool) * len);
 memset(S, 0, sizeof(bool) * len);
 
 int current = sum;
-for (int i = n; i >= 0; i--) {
-    if (current - set[i - 1] >= 0 && dp[i][current - set[i - 1]]) {
-        S[i - 1] = true;
-        current -= set[i - 1];
+for (int i = n - 1; i >= 0; i--) {
+    if (current - set[i] >= 0 && dp[i][current - set[i]]) {
+        S[i] = true;
+        current -= set[i];
     }
 }
 
 free(dp[0]);
 free(dp);
 return S;
-}
 ```]
 
 - 後ろから探索し、部分和に寄与した要素を記録していく。
 - メモリを解放し、結果を返す。
+
+また、`subsetSumMain.c` において `subsetSum` の結果を保持している変数 `S` のメモリ解放処理が無かったため、
+`free(S);` を適切な位置に入れた。（もっともこの後にプロセスがすぐ死ぬので不要ではあるが、一般的には適切でないと考えられることが多いため）
 
 === 実行結果 <run-4>
 
@@ -141,7 +142,56 @@ return S;
 
 === 発展課題2.2
 
-// TODO:
+本課題は、配列setを10要素程度の適当な配列に変更し、プログラムの動作を確認するというものである。
+
+`subsetSumMain.c` 内の `set` と `len` の定義を以下のように変更した。
+
+#sourcecode[```c
+int set[] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29};
+int len = 10;
+```]
+
+また、プログラムの動作を確認すると @code4-3 のようになった。
+
+#figure(
+  sourcecode[```
+$ ./subsetSum 10 100                   
+部分集合5 7 17 19 23 29                                                   
+
+$ ./subsetSum 10 129
+部分集合2 3 5 7 11 13 17 19 23 29                                              
+
+$ ./subsetSum 10 1  
+条件を満たす部分集合はない．
+
+$ ./subsetSum 10 130
+条件を満たす部分集合はない．
+
+$ ./subsetSum 10 28 
+部分集合5 23                                                                        
+
+$ ./subsetSum 10 11 
+部分集合11                                                                          
+
+$ ./subsetSum 10 45
+部分集合3 13 29                                                                     
+
+$ ./subsetSum 10 14
+部分集合3 11                                                                        
+
+$ ./subsetSum 10 89 
+部分集合5 13 19 23 29                                                               
+
+$
+  ```],
+  caption: "実行結果"
+) <code4-3>
+
+`set` をすべて合計すると、129 になる。
+`10, 129` を引数に与えて実行したものは、10 要素すべてが出力された。
+また、`10 130` （合計以上）にすると条件を満たす部分集合はないと報告された。
+
+同様に他の例についても期待通りの出力が得られた。
 
 === 考察
 
