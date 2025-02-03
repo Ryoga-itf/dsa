@@ -13,8 +13,7 @@ extern int len;
 
 bool *subsetSum(int *set, int n, int sum) {
     bool **dp = (bool **)malloc(sizeof(bool *) * (n + 1));
-    bool *array = (bool *)malloc(sizeof(bool) * (n + 1) * (sum + 1));
-    memset(array, 0, sizeof(bool) * (n + 1) * (sum + 1));
+    bool *array = (bool *)calloc((n + 1) * (sum + 1), sizeof(bool));
     for (int i = 0; i <= n; i++) {
         dp[i] = array + (sum + 1) * i;
         dp[i][0] = true;
@@ -39,10 +38,10 @@ bool *subsetSum(int *set, int n, int sum) {
     memset(S, 0, sizeof(bool) * len);
 
     int current = sum;
-    for (int i = n; i >= 0; i--) {
-        if (current - set[i - 1] >= 0 && dp[i][current - set[i - 1]]) {
-            S[i - 1] = true;
-            current -= set[i - 1];
+    for (int i = n - 1; i >= 0; i--) {
+        if (current - set[i] >= 0 && dp[i][current - set[i]]) {
+            S[i] = true;
+            current -= set[i];
         }
     }
 
